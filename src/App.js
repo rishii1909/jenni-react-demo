@@ -11,7 +11,7 @@ import QuillCursors from 'quill-cursors';
 ReactQuill.Quill.register('modules/cursors', QuillCursors);
 
 
-var ws = new ReconnectingWebSocket("ws://jenni-demo-server.herokuapp.com");
+var ws = new ReconnectingWebSocket("wss://jenni-demo-server.herokuapp.com");
 
 var quill_modules = {
   cursors : true,
