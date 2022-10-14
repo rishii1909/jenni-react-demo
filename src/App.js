@@ -7,12 +7,11 @@ import Delta from'quill-delta';
 
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import QuillCursors from 'quill-cursors';
-import randomColor from 'randomcolor';
 
 ReactQuill.Quill.register('modules/cursors', QuillCursors);
 
 
-var ws = new ReconnectingWebSocket(process.env.websocket_url || "ws://localhost:8080");
+var ws = new ReconnectingWebSocket("ws://jenni-demo-server.herokuapp.com");
 
 var quill_modules = {
   cursors : true,
