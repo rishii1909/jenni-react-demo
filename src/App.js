@@ -6,15 +6,15 @@ import { Dimmer, Loader, Segment } from 'semantic-ui-react';
 import Delta from'quill-delta';
 
 import ReconnectingWebSocket from 'reconnecting-websocket';
-import QuillCursors from 'quill-cursors';
+// import QuillCursors from 'quill-cursors';
 
-ReactQuill.Quill.register('modules/cursors', QuillCursors);
+// ReactQuill.Quill.register('modules/cursors', QuillCursors);
 
 
 var ws = new ReconnectingWebSocket("wss://jenni-demo-server.herokuapp.com");
 
 var quill_modules = {
-  cursors : true,
+  // cursors : true,
   toolbar: [
     [{ 'header': [1, 2, false] }],
     ['bold', 'italic', 'underline','strike', 'blockquote'],
