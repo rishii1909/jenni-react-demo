@@ -1,6 +1,6 @@
 .ql-container {
   min-height: 10rem;
-  height: calc(100vh - 20em);
+  height: calc(100vh - 36em);
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -21,6 +21,32 @@ body{
 .ui.segment.raised.main-wrapper{
   margin: 6em;
   padding: 2em;
+  position: relative !important;
+  padding-top: 1.2em;
   box-shadow: 0px 0px 12px 2px rgba(180, 179, 179, 0.6) !important;
+  /* background-color: #f8f7fcce; */
 }
 
+
+.logo{
+  transform: scale(1.1);
+  width: 9em;
+  border-radius: 100px;
+  border: 2px solid rgba(211, 211, 211, 0.568);
+  position: absolute;
+  top: -3em;
+  box-shadow: 0px 4px 12px 0px rgb(226, 226, 226);
+  z-index: 100000 !important;
+}
+
+#counter{
+  padding: 0.4em;
+  margin: 1em 0 !important;
+  opacity: 0.8 !important;
+}
+
+@media only screen and (max-width: 800px) {
+  .logo {
+    transform: scale(0.9);
+  }
+}

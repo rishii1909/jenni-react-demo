@@ -2,25 +2,41 @@ import React, { useState, useEffect, useRef } from 'react';
 import 'react-quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill';
 import "./App.css"
-import { Dimmer, Loader, Segment } from 'semantic-ui-react';
+import logo from "./jenni_logo.svg";
+import { Button, Dimmer, Divider, Header, Label, Loader, Progress, Segment } from 'semantic-ui-react';
 import Delta from'quill-delta';
 
 import ReconnectingWebSocket from 'reconnecting-websocket';
+import Wordcounter from 'quill-wordcounter'
+
+ReactQuill.Quill.register('modules/counter', Wordcounter);
+
 // import QuillCursors from 'quill-cursors';
 
 // ReactQuill.Quill.register('modules/cursors', QuillCursors);
 
 
 var ws = new ReconnectingWebSocket("wss://jenni-demo-server.herokuapp.com");
+// var ws = new ReconnectingWebSocket("ws://localhost:8080");
 
 var quill_modules = {
   // cursors : true,
+  counter: {
+    container: '#counter',
+    unit: 'word'
+  },
   toolbar: [
-    [{ 'header': [1, 2, false] }],
-    ['bold', 'italic', 'underline','strike', 'blockquote'],
-    [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-    ['link', 'image'],
-    ['clean']
+    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+    [{ "font": [] }, { "size": ["small", false, "large", "huge"] }], // custom dropdown
+    ["bold", "italic", "underline", "strike"],
+    [{ "color": [] }, { "background": [] }],
+    [{ "script": "sub" }, { "script": "super" }],
+    [{ "header": 1 }, { "header": 2 }, "blockquote", "code-block"],
+    [{ "list": "ordered" }, { "list": "bullet" }, { "indent": "-1" }, { "indent": "+1" }],
+    [{ "direction": "rtl" }, { "align": [] }],
+    ["link", "image", "video", "formula"],
+    ["clean"]
+    
   ],
 };
 
@@ -64,10 +80,12 @@ function App() {
             break;
 
           case "update_document":
-            // console.log("received update : ", response.data)
+            console.log("current document : ", document);
+            console.log("received update : ", response.data)
             const new_doc = {
               ops : new Delta(document.ops).compose(new Delta(response.data)).ops
             };
+            console.log(new_doc);
             setDocument(new_doc);
             break;
 
@@ -147,6 +165,7 @@ function App() {
   const handleQuillChanges = (content, delta, source, editor) => {
     if(source !== 'user') return;
     // console.log("Sending for update : ", delta)
+    setDocument(editor.getContents());
     send_ws("update_document", delta);
   }
 
@@ -160,15 +179,24 @@ function App() {
             <Loader size='big' inverted>{loadingMessage}</Loader>
           </Dimmer>
         }
+        <br />
+        <br />
+        <img src={logo} className="logo"></img>
+        <Header textAlign='center' as='h1'>Jenni.ai collaborative editor</Header>
+        <Divider />
       <ReactQuill 
         ref={quill_ref} 
         theme="snow" 
         className='quill-editor' 
+        id='react-quill-editor'
         value={document} 
         onChange={handleQuillChanges} 
         modules={quill_modules}
         formats={quill_formats}
       />
+      <div style={{display : 'flex', justifyContent : "flex-end", flexFlow : "row wrap"}}>
+        <Label id='counter'></Label>
+      </div>
       </Segment>
     </div>
   );
